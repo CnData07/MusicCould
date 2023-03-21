@@ -7,6 +7,9 @@
   <title>音乐播放器-模板</title>
   <!-- 样式 -->
   <link rel="stylesheet" href="./css/index.css">
+  <script src="js/vue.min.js"></script>
+  <script src="js/axios.min.js"></script>
+
 </head>
 
 <body>
@@ -15,16 +18,16 @@
     <div class="play_wrap" id="player">
       <div class="search_bar">
         <!-- 搜索歌曲 -->
-        <input type="text" autocomplete="off" />
+        <input type="text" autocomplete="off" v-model="search" @keyup.enter="searchFunc"/>
       </div>
       <div class="center_con">
         <!-- 搜索歌曲列表 -->
         <div class='song_wrapper'>
           <ul class="song_list">
-            <li>  
-              <a href="javascript:;"></a> 
-              <b>歌曲名</b> 
-              <span><i></i></span>
+            <li v-for="song in songs">
+              <a href="javascript:;" @click="playSong(song.id);getComments(song.id)"></a>
+              <b v-text="song.name"></b>
+              <span><i v-show="song.mvid"></i></span>
             </li>
           </ul>
           <img src="images/line.png" class="switch_btn" alt="">
@@ -40,11 +43,10 @@
         <div class="comment_wrapper">
           <h5 class='title'>热门留言</h5>
           <div class='comment_list'>
-            <dl>
+            <dl v-for="com in comments">
               <dt><img src="./images/person01.png" alt=""></dt>
-              <dd class="name">用户名</dd>
-              <dd class="detail">
-                一段留言一段留言一段留言一段留言一段留言一段留言一段留言一段留言一段留言一段留言一段留言
+              <dd class="name" v-text="com.user.nickname"></dd>
+              <dd class="detail" v-text="com.content">
               </dd>
             </dl>
           </div>
@@ -52,7 +54,7 @@
         </div>
       </div>
       <div class="audio_con">
-        <audio ref='audio' controls autoplay loop class="myaudio"></audio>
+        <audio ref='audio' :src="audio.url" controls autoplay loop class="myaudio"></audio>
       </div>
       <div class="video_con" style="display: none;">
         <video controls="controls"></video>
@@ -61,4 +63,5 @@
     </div>
   </div>
 </body>
+<script src="js/index.js"></script>
 </html>
